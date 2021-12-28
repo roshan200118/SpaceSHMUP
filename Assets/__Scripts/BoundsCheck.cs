@@ -7,16 +7,17 @@ using UnityEngine;
 /// </summary>
 public class BoundsCheck : MonoBehaviour
 {
+    [Header("Set in Inspector")]
     //Creating a variable to store the radius of the game object
     public float radius = 1f;
-
     //Creating a variable to force a GameObject to stay on the screen or exit the screen
     public bool keepOnScreen = true;
 
+
+    [Header("Set Dynamically")]
     //Creating variables to store the camera's width and height
     public float camWidth;
     public float camHeight;
-
     //Creating a variable to check if the GameObject is on the screen or not
     public bool isOnScreen = true;
 

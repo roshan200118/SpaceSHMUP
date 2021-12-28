@@ -11,6 +11,8 @@ public class Main : MonoBehaviour
     //Singleton for Main
     static public Main S;
 
+    static Dictionary<WeaponType, WeaponDefinition> WEAP_DICT;
+
     [Header("Set in Inspector")]
     //Creating an array to store the enemies
     public GameObject[] prefabEnemies;
@@ -20,6 +22,12 @@ public class Main : MonoBehaviour
 
     //Padding for position
     public float enemyDefaultPadding = 1.5f;
+
+    public WeaponDefinition[] weaponDefinitions;
+    public GameObject prefabPowerUp;
+    public WeaponType[] powerUpFrequency = new WeaponType[] {
+        WeaponType.blaster, WeaponType.blaster, WeaponType.shield, WeaponType.spread };
+
 
     //Creating a variable to reference the BoundsCheck script
     private BoundsCheck bndCheck;
@@ -34,6 +42,12 @@ public class Main : MonoBehaviour
 
         //Calls the SpawnEnemy() method in 1/0.5 = 2 seconds
         Invoke("SpawnEnemy", 1f / enemySpawnPerSecond);
+
+        WEAP_DICT = new Dictionary<WeaponType, WeaponDefinition>();
+        foreach (WeaponDefinition def in weaponDefinitions)
+        {
+            WEAP_DICT[def.type] = def; 
+        }
     }
 
     public void SpawnEnemy()
@@ -86,4 +100,28 @@ public class Main : MonoBehaviour
         //Reload the scene to restart the game
         SceneManager.LoadScene("_Scene_0");
     }
+
+    static public WeaponDefinition GetWeaponDefinition(WeaponType wt)
+    {
+        if (WEAP_DICT.ContainsKey(wt))
+        {
+            return (WEAP_DICT[wt]);
+        }
+        return (new WeaponDefinition());
+    }
+
+    public void ShipDestroyed(Enemy e)
+    {
+        if(Random.value<=e.powerUpDropChance)
+        {
+            int ndx = Random.Range(0, powerUpFrequency.Length);
+            WeaponType puType = powerUpFrequency[ndx];
+
+            GameObject go = Instantiate(prefabPowerUp) as GameObject;
+            PowerUp pu = go.GetComponent<PowerUp>();
+            pu.SetType(puType);
+            pu.transform.position = e.transform.position;
+        }
+    }
+
 }
