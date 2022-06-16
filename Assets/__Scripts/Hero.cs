@@ -12,7 +12,7 @@ public class Hero : MonoBehaviour
 
     [Header("Set in Inspector")]
     //These variables control the ship movement
-    public float speed = 30;
+    public float speed = 45;
     public float rollMult = -30;
     public float pitchMult = 20;
     public float gameRestartDelay = 2f;     //The game's delay time before a restart (in seconds)
